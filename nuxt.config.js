@@ -37,7 +37,15 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
   ],
-
+  /*
+   ** dotenv
+   */
+  env: {
+    CTF_SPACE_ID: process.env.CTF_SPACE_ID,
+    CTF_BLOG_POST_TYPE_ID: process.env.CTF_BLOG_POST_TYPE_ID,
+    CTF_CDA_ACCESS_TOKEN: process.env.CTF_CDA_ACCESS_TOKEN,
+    VUE_APP_GOOGLE_MAPS_API_KEY: process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
+  },
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
 
