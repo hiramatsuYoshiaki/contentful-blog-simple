@@ -1,4 +1,5 @@
 require('dotenv').config()
+const client = require('./plugins/contentful').default
 import colors from 'vuetify/es5/util/colors'
 
 export default {
@@ -48,6 +49,12 @@ export default {
   },
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
+  /*
+   ** middleware
+   */
+  router: {
+    middleware: ['getContentful'],
+  },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
