@@ -1,6 +1,5 @@
 # tourdehdr-simple
 
-TOURdeHDR-Simple
 ![tourdehdr-simple](https://user-images.githubusercontent.com/20366817/95543010-583d7f80-0a32-11eb-844a-630ff8e70902.PNG)
 
 # OVERVIEW
