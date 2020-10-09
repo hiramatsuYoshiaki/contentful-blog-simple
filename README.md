@@ -1,7 +1,7 @@
 # tourdehdr-simple
 
 TOURdeHDR-Simple
-![contentful_blog_git](https://user-images.githubusercontent.com/20366817/73811075-cf73a180-481b-11ea-8af4-da7521e04e53.gif)
+![tourdehdr-simple](https://user-images.githubusercontent.com/20366817/95543010-583d7f80-0a32-11eb-844a-630ff8e70902.PNG)
 
 # OVERVIEW
 
@@ -15,7 +15,7 @@ https://github.com/hiramatsuYoshiaki/contentful-blog-simple
 ### Host Netlify
 
 Site: tourdehdr3
-URL: https://tourdehdr3.netlify.com
+URL: https://tourdehdr-simple.netlify.app/
 
 ### Contentful
 
