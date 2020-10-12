@@ -1,12 +1,14 @@
 <template lang="pug">
-v-app#baseline
+v-app
   v-navigation-drawer.d-flex.justify-sm-center.align-sm-center.pa-8(
     v-model='drawer',
+    dark,
     app,
     bottom,
     stateless,
     width='100vw',
     height='100vh'
+    color="grey darken-4"
   ) 
     v-list.d-flex.flex-column.justify-center.align-center(
       light,
@@ -15,55 +17,64 @@ v-app#baseline
       height='50rem',
       text
     ) 
-      v-list-item.listItems(
+      v-list-item(
         v-for='(item, i) in items',
         :key='i',
         :to='item.to',
         router,
         exact,
+        elevation=0,
         @click.stop='drawer = !drawer'
+        color="grey darken-4"
       )
-        v-list-item-action.pl-8.pr-2
-          v-icon(large) {{ item.icon }}
+        //- v-list-item-action.pl-8.pr-2
+        //-   v-icon(large dark) {{ item.icon }}
         v-list-item-content
-          v-list-item-title 
-            h1.text-h4 {{ item.title }}
+          v-list-item-title.text-center
+            v-btn(dark elevation=0 color="grey darken-4") 
+              h1.text-h4 {{ item.title }}
+      v-btn(@click.stop='drawer = !drawer').mt-8 
+        v-icon mdi-close-thick
 
-    .closeBtn(@click.stop='drawer = !drawer') 
-      v-icon mdi-close-thick
-
-  v-app-bar(app) 
-    v-app-bar-nav-icon(@click.stop='drawer = !drawer') 
+  v-app-bar(app color="grey darken-4") 
     v-toolbar-title 
       nuxt-link(to='/')
         h2 TOURdeHDR+3
     v-spacer 
-    .d-none.d-sm-flex
+    v-toolbar-items.d-none.d-sm-flex
       v-btn(
         v-for='(item, i) in items',
         :key='i',
         :to='item.to',
         router,
         exact,
-        text
+        elevation=0,
+        color="grey darken-4"
       )
-        v-icon.d-none.d-lg-block.mr-1 {{ item.icon }}
-        span {{ item.title }}
+        //- div.mr-4(
+        //-   v-for='(item, i) in items',
+        //-   :key='i',
+        //- )
+        //- v-icon.d-none.d-lg-block.mr-1 {{ item.icon }}
+        //- nuxt-link(:to="item.to")
+        span(color="white") {{ item.title }}
+    v-app-bar-nav-icon(@click.stop='drawer = !drawer').d-flex.d-sm-none
 
   v-main
     nuxt 
-  v-footer(app, width='100vw')
+  v-footer(app, width='100vw' color="grey darken-4")
     //- v-toolbar-title.d-flex.justify-center.align-center
     v-toolbar-title.footerTitle.pa-4.d-flex.justify-center.align-center
       //- span TOURdeHDR+3
+      
+      img.mr-4.d-none.d-md-block(
+        src='~/assets/img/logo/h-works1200x600white.svg',
+        alt='h-works logo',
+        height='28'
+      )
       img.d-block.mr-4(
         src='~assets/img/logo/h-logo.svg',
         alt='h-works',
-        height='28'
-      )
-      img.mr-4.d-none.d-md-block(
-        src='~/assets/img/logo/h-works1200x600black.svg',
-        alt='h-works logo',
         height='28'
       )
       .mr-4.mt-2 &copy; {{ new Date().getFullYear() }}
@@ -86,11 +97,11 @@ export default {
           title: 'POST',
           to: '/posts',
         },
-        {
-          icon: 'mdi-map-marker',
-          title: 'LOCATION',
-          to: '/locations',
-        },
+        // {
+        //   icon: 'mdi-map-marker',
+        //   title: 'LOCATION',
+        //   to: '/locations',
+        // },
         {
           icon: 'mdi-numeric-1-box-multiple',
           title: 'STAGES',
@@ -110,6 +121,7 @@ export default {
 html {
   font-size: 62.5%; //62.5% 1rem=10px
 }
+
 // a {
 //   color: black;
 //   text-decoration: none;
@@ -121,19 +133,6 @@ html {
 // * {
 //   border: 1px solid lightgray;
 // }
-.closeBtn {
-  position: absolute;
-  top: 0rem;
-  right: 0rem;
-  margin: 1rem 1rem;
-}
-
-.listItems {
-  // border: 1px solid darkblue;
-  width: 28rem;
-  padding: 0;
-  margin: 0;
-}
 .footerTitle {
   width: 100vw;
 }
