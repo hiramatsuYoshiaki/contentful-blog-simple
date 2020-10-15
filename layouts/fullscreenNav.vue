@@ -7,8 +7,8 @@ v-app
     bottom,
     stateless,
     width='100vw',
-    height='100vh'
-    color="grey darken-4"
+    height='100vh',
+    color='grey darken-4'
   ) 
     v-list.d-flex.flex-column.justify-center.align-center(
       light,
@@ -24,19 +24,19 @@ v-app
         router,
         exact,
         elevation=0,
-        @click.stop='drawer = !drawer'
-        color="grey darken-4"
+        @click.stop='drawer = !drawer',
+        color='grey darken-4'
       )
         //- v-list-item-action.pl-8.pr-2
         //-   v-icon(large dark) {{ item.icon }}
         v-list-item-content
           v-list-item-title.text-center
-            v-btn(dark elevation=0 color="grey darken-4") 
+            v-btn(dark, elevation=0, color='grey darken-4') 
               h1.text-h4 {{ item.title }}
-      v-btn(@click.stop='drawer = !drawer').mt-8 
+      v-btn.mt-8(@click.stop='drawer = !drawer') 
         v-icon mdi-close-thick
 
-  v-app-bar(app color="grey darken-4") 
+  v-app-bar(app, color='grey darken-4') 
     v-toolbar-title 
       nuxt-link(to='/')
         h2 TOURdeHDR+3
@@ -49,7 +49,7 @@ v-app
         router,
         exact,
         elevation=0,
-        color="grey darken-4"
+        color='grey darken-4'
       )
         //- div.mr-4(
         //-   v-for='(item, i) in items',
@@ -57,16 +57,16 @@ v-app
         //- )
         //- v-icon.d-none.d-lg-block.mr-1 {{ item.icon }}
         //- nuxt-link(:to="item.to")
-        span(color="white") {{ item.title }}
-    v-app-bar-nav-icon(@click.stop='drawer = !drawer').d-flex.d-sm-none
+        span(color='white') {{ item.title }}
+    v-app-bar-nav-icon.d-flex.d-sm-none(@click.stop='drawer = !drawer')
 
   v-main
     nuxt 
-  v-footer(app, width='100vw' color="grey darken-4")
+  v-footer(app, width='100vw', color='grey darken-4')
     //- v-toolbar-title.d-flex.justify-center.align-center
     v-toolbar-title.footerTitle.pa-4.d-flex.justify-center.align-center
       //- span TOURdeHDR+3
-      
+
       img.mr-4.d-none.d-md-block(
         src='~/assets/img/logo/h-works1200x600white.svg',
         alt='h-works logo',
@@ -107,11 +107,11 @@ export default {
           title: 'STAGES',
           to: '/stages',
         },
-        {
-          icon: 'mdi-tag-multiple',
-          title: 'TAGS',
-          to: '/tags',
-        },
+        // {
+        //   icon: 'mdi-tag-multiple',
+        //   title: 'TAGS',
+        //   to: '/tags',
+        // },
       ],
     }
   },

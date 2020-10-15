@@ -3,22 +3,6 @@ v-container
   section.ly_section_wrapper
     h1 TOURdeHDR SIMPLE
     p stages index.vue
-  //- v-item-group(v-model='selected', multiple)
-  //-   v-row 
-  //-     v-col(
-  //-       v-for='(post, idxPost) in posts.slice(0, 5)',
-  //-       :key='post.sys.id',
-  //-       cols='12',
-  //-       md='4'
-  //-     ) 
-  //-       v-item(v-slot:default='{ active, toggle }')
-  //-         v-img.text-right.pa-2(
-  //-           :src='post.fields.heroImage.fields.file.url',
-  //-           height='150',
-  //-           @click='toggle'
-  //-         )
-  //-           v-btn(icon, dark)
-  //-             v-icon {{ active ? "mdi-heart" : "mdi-heart-outline" }}
   v-item-group(v-model='selected', multiple)
     v-row 
       v-col(
@@ -30,7 +14,7 @@ v-container
         v-item(v-slot:default='{ active, toggle }')
           v-img.text-right.pa-2(
             :src='post.fields.heroImage.fields.file.url',
-            height='150',
+            height='250',
             @click='toggle'
           )
             v-btn(icon, dark, v-if='!active')

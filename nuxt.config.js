@@ -19,7 +19,10 @@ export default {
   css: ['@/assets/sass/styles.scss'],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['~/plugins/contentful.js'],
+  plugins: [
+    '~/plugins/contentful.js',
+    { src: '~/plugins/vue2-touch-events.js', ssr: false },
+  ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -55,12 +58,51 @@ export default {
   router: {
     middleware: ['getContentful'],
   },
-
+  /*
+   ** generate
+   */
+  generate: {
+    routes() {
+      return Promise.all([
+        client.getEntries({
+          content_type: process.env.CTF_BLOG_POST_TYPE_ID,
+        }),
+        client.getEntries({
+          content_type: 'category',
+        }),
+        client.getEntries({
+          content_type: 'tag',
+        }),
+      ]).then(([posts, categories, tags, stages]) => {
+        return [
+          ...posts.items.map((post) => {
+            return { route: `post/${post.fields.slug}`, payload: post }
+          }),
+          ...categories.items.map((category) => {
+            return {
+              route: `categories/${category.fields.slug}`,
+              payload: category,
+            }
+          }),
+          ...categories.items.map((category) => {
+            return {
+              route: `stages/${category.fields.stage}`,
+              payload: category,
+            }
+          }),
+          ...tags.items.map((tag) => {
+            return { route: `tags/${tag.fields.slug}`, payload: tag }
+          }),
+        ]
+      })
+    },
+  },
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     customVariables: ['~/assets/sass/variables.scss'],
     theme: {
-      dark: true,
+      // dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,
