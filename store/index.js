@@ -5,6 +5,7 @@ export const state = () => ({
   posts: [],
   categories: [],
   tags: [],
+  authers: [],
 })
 
 // mutation
@@ -12,8 +13,12 @@ export const mutations = {
   setPosts(state, payload) {
     state.posts = payload
   },
+  setAuthers(state, payload) {
+    // console.log('setAuthers+++++++++++++++++++++++++')
+    // console.log(payload)
+    state.authers = payload
+  },
   setLinks(state, entries) {
-    console.log('setLink 1 ------------------------------------')
     state.tags = []
     state.categories = []
     for (let i = 0; i < entries.length; i++) {
@@ -34,12 +39,25 @@ export const actions = {
         order: '-fields.publishDate',
       })
       .then((res) => {
-        console.log('feedPosts setLink----------------------')
+        // console.log('feedPosts setLink----------------------')
         commit('setLinks', res.includes.Entry)
         commit('setPosts', res.items)
       })
       .catch((err) => {
-        console.log('contentful api error: ' + err)
+        console.log('contentful Posts api error: ' + err)
+      })
+  },
+  async feedAuthers({ commit }) {
+    await client
+      .getEntries({
+        content_type: 'person',
+      })
+      .then((res) => {
+        // console.log('feedAuthers +++++++++++++')
+        commit('setAuthers', res.items)
+      })
+      .catch((err) => {
+        console.log('contentful Authers api error: ' + err)
       })
   },
 }
