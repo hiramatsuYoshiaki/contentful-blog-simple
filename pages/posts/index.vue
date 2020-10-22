@@ -5,25 +5,26 @@ v-container(color='grey darken-2')
       section 
         h1 TOURdeHDR+3
         p posts/index.vue
-        p vuetify stepper vertical UI
+        //- p vuetify stepper vertical UI
   v-row 
     v-col.d-flex.child-flex(
-      v-for='(post, i) in posts.slice(0, dsp)',
+      v-for='(post, i) in filterPostPage(posts)',
       :key='post.sys.id',
       cols='6',
       sm='6',
       md='4',
       lg='3'
     )
-      v-img.grey.lighten-2(
-        :src='post.fields.heroImage.fields.file.url',
-        aspect-ratio='1'
-      )
-      //- v-img.mb-2.white--text.align-end(
-      //-           :src='post.fields.heroImage.fields.file.url',
-      //-           height='200',
-      //-           width='auto'
-      //- )
+      nuxt-link(:to="`/posts/${post.sys.id}`")  
+        v-card
+          v-img(
+            :src='`${setEyeCatchImage(post).url}`',
+          )
+          v-card-title 
+              h3.text-h3  {{ post.fields.title }}   
+          v-card-subtitle 
+                h4.text-h4 {{post.fields.stage}}
+      
 
   //- v-row 
   //-   v-col 
@@ -59,16 +60,22 @@ v-container(color='grey darken-2')
   //-           v-btn(color='primary', @click='eNo = eNo - 1', v-show='i > 0') Back Post
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
   layout: 'fullscreenNav',
   computed: {
     ...mapState(['posts']),
+    ...mapGetters([
+      'setEyeCatch',
+      'setEyeCatchImage',
+      'setEyeCatchImage2',
+      'filterPostPage',
+    ]),
   },
   data() {
     return {
       // eNo: 1,
-      dsp: 4,
+      dsp: 6,
     }
   },
 }

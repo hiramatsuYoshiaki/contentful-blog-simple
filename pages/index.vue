@@ -7,21 +7,21 @@ v-container
   //-     div(v-touch:swipe="swipeRightHandler") Swipe Right 
   //-     div(v-touch:swipe.left="swipeLeftHandler") Swipe Here
   v-row 
+    
     v-col.mx-auto(cols='12', sm='12', md='12', lg='10', xl='8')
       v-row 
+        //- Left Side -----------------------------------------------------------------------
         v-col(cols='12', sm='8', md='6')
-          //- h1 stage slider group
           v-sheet.mb-8.d-flex.justify-center.align-center(
-            elevation='3',
+            elevation='1',
             height='126px'
           )
-            v-slide-group(v-model='model', active-class='success')
+            v-slide-group(v-model='model', active-class='accent',show-arrows=desktop,center-active)
               v-slide-item(
-                v-for='item in filterTitlePage().slice(0, 10)',
-                :key='item.sys.id',
+                v-for='post in filterTitlePage().slice(0, 10)',
+                :key='post.sys.id',
                 v-slot:default='{ active, toggle }'
               )
-                nuxt-link(:to='`/stages/${item.sys.id}`')
                   v-card.ma-1(
                     :color='active ? undefined : "grey lighten-1"',
                     height='auto',
@@ -29,14 +29,26 @@ v-container
                     @click='toggle'
                   )
                     v-img.white--text.align-end(
-                      :src='item.fields.heroImage.fields.file.url',
+                      :src='post.fields.heroImage.fields.file.url',
                       width='100%',
                       height='auto'
+                      v-if="!active"
                     )
-                    h6.text-h6.text--black {{ item.fields.category.fields.stage }}
-
-          //- h1.text-h3 post
-          v-card.mb-8(v-for='post in filterPostPage()', :key='post.sys.id') 
+                    nuxt-link(:to='`/stages/${post.fields.category.fields.slug}`') 
+                      v-row(
+                        class="fill-height"
+                        align="center"
+                        justify="center"
+                        v-if="active"
+                        
+                      )
+                        h5.text-h5.white--text Go Stage
+                        v-icon(
+                          color="white"
+                          size="24"
+                          v-text="'mdi-arrow-right'"
+                        ) 
+          v-card.mb-8(v-for='post in filterPostPage().slice(0,5)', :key='post.sys.id') 
             v-img(
               :src='`${setEyeCatch(post).url}`',
               width='100%',
@@ -45,7 +57,11 @@ v-container
             )
             v-card-title {{ post.fields.title }}
             v-card-subtitle {{ post.fields.stage }}
-            v-cars-actions
+              span.ml-2  {{ dateFilter(post.fields.publishDate) }}
+            //- v-card-subtitle 
+            //-   span {{ post.fields.body }}
+
+            v-card-actions
               nuxt-link(:to='`/posts/${post.sys.id}`') 
                 v-btn(text) この投稿を見る
             v-divider
@@ -58,111 +74,8 @@ v-container
               v-btn(icon) 
                 v-icon mdi-instagram
             //- .bg-img-card(:style="{background: `top center / cover no-repeat url(${setEyeCatch(post).url})`}")
-
-        v-col.d-none.d-sm-block(cols='12', sm='4', md='6')
           section.mb-8 
-            v-sheet.mb-8.pa-4(
-              el.d-flex.justify-start.align-centerevation='0',
-              height='126px'
-            )
-              div(v-for='auther in authers', :key='auther.sys.id')
-                .d-flex.justify-start.align-center
-                  img(
-                    :src='auther.fields.image.fields.file.url',
-                    :alt='auther.fields.image.fields.title',
-                    :aspect-ratio='16 / 9',
-                    width='80',
-                    height='auto'
-                  )
-                  .ml-4 
-                    h5.text-h5.mb-2 {{ auther.fields.title }}
-                    h5.text-h5 {{ auther.fields.company }}
-          section.mb-8 
-            v-sheet.mb-8.pa-4(elevation='3')
-              v-subheader 
-                h3.text-h3 Tags
-              v-divider
-              v-chip-group.pa-2(column)
-                v-chip(v-for='tag in tags', :key='tag.sys.id')
-                  h1 {{ tag.fields.name }}
-          section.mb-8 
-            v-sheet.mb-8.pa-4(elevation='3')
-              v-subheader 
-                h3.text-h3 Stage
-              v-divider
-              v-chip-group.pa-2(column)
-                v-chip(
-                  v-for='categorie in categories',
-                  :key='categorie.sys.id'
-                )
-                  h1 {{ categorie.fields.name }}
-          section.mb-8 
-            v-sheet.mb-8.pa-4(elevation='3')
-              v-subheader 
-                h3.text-h3 Locations
-              v-divider
-              v-chip-group.pa-2(column)
-                div(v-for='tag in tags', :key='tag.sys.id')
-                  v-chip(v-show='tag.fields.lacation') 
-                    h1 {{ tag.fields.name }}
-          section.mb-8 
-            v-sheet.mb-8.pa-4(elevation='3')
-              v-subheader 
-                h3.text-h3 Time
-              v-divider
-              v-chip-group.pa-2(column)
-                div(v-for='tag in tags', :key='tag.sys.id')
-                  v-chip(v-show='tag.fields.time')
-                    h1 {{ tag.fields.name }}
-          section.mb-8 
-            v-sheet.mb-8.pa-4(elevation='3')
-              v-subheader 
-                h3.text-h3 Veichle
-              v-divider
-              v-chip-group.pa-2(column)
-                div(v-for='tag in tags', :key='tag.sys.id')
-                  v-chip(v-show='tag.fields.move')
-                    h1 {{ tag.fields.name }}
-          section.mb-8 
-            v-sheet.mb-8.pa-4(elevation='3')
-              v-subheader 
-                h3.text-h3 Post Date
-              v-divider
-              v-chip-group.pa-2(column)
-                v-chip(v-for='post in posts', :key='post.sys.id')
-                  h1 {{ post.fields.publishDate }}
-          section.mb-8 
-            v-sheet.mb-8.pa-4(elevation='3')
-              v-subheader 
-                h3.text-h3 Post Title
-              v-divider
-              v-chip-group.pa-2(column)
-                v-chip(v-for='post in posts', :key='post.sys.id')
-                  h1 {{ post.fields.title }}
-          section.mb-8 
-            v-sheet.mb-8.pa-4(elevation='3')
-              v-subheader 
-                h3.text-h3 Stage Title
-              v-divider
-              v-chip-group.pa-2(column)
-                v-chip(
-                  v-for='categorie in categories',
-                  :key='categorie.sys.id'
-                )
-                  h1 {{ categorie.fields.name }}
-          section.mb-8 
-            v-sheet.mb-8.pa-4.d-flex.justify-start.align-center(elevation='3')
-              h1 link
-          //- section.mb-8 
-          //-   h1 data picker
-          //-   v-sheet.mb-8.pa-4.d-flex.justify-center.align-center(elevation='3')
-          //-     v-date-picker(
-          //-       v-model='date1',
-          //-       :events='arrayEvents',
-          //-       event-color='red lighten-1'
-          //-     )
-          section.mb-8 
-            h1 Calemder 
+            h3.text-h3.mb-2 Calemder 
             v-sheet.d-flex.align-center(
               tile,
               height='64px',
@@ -230,15 +143,116 @@ v-container
                           @click="selectedOpen = false"
                       ) Cancel
                       v-spacer
-                      nuxt-link(:to="`/stages/${selectedEvent.id}`").text--black
+                      nuxt-link(:to="`/posts/${selectedEvent.id}`").text--black
                         v-btn(icon)
-                          v-icon mdi-arrow-right
+                          v-icon mdi-arrow-right 
+        //- Right Side -----------------------------------------------------------------------
+        v-col.d-none.d-sm-block(cols='12', sm='4', md='6')
+          section.mb-8 
+            v-sheet.mb-8.pa-4(
+              el.d-flex.justify-start.align-centerevation='0',
+              height='126px'
+            )
+              div(v-for='auther in authers', :key='auther.sys.id')
+                .d-flex.justify-start.align-center
+                  img(
+                    :src='auther.fields.image.fields.file.url',
+                    :alt='auther.fields.image.fields.title',
+                    :aspect-ratio='16 / 9',
+                    width='80',
+                    height='auto'
+                  )
+                  .ml-4.text-truncate 
+                    h5.text-h5.mb-2 {{ auther.fields.title }}
+                    h5.text-h5 {{ auther.fields.company }}
+          
+          section.mb-8 
+            v-sheet.mb-8.pa-4(elevation='0')
+              v-subheader
+                nuxt-link(to='/stages') 
+                  h3.text-h3 Stage
+              v-divider
+              v-chip-group.pa-2(column)
+                v-chip(
+                  v-for='categorie in categories',
+                  :key='categorie.sys.id'
+                )
+                  //- nuxt-link(:to='`/stages/${categorie.sys.id}`') 
+                  nuxt-link(:to='`/stages/${categorie.fields.slug}`') 
+                    h5.text-h5 {{ categorie.fields.name }}
+          section.mb-8 
+            v-sheet.mb-8.pa-4(elevation='0')
+              v-subheader
+                nuxt-link(to='/tags') 
+                  h3.text-h3 Tags
+              v-divider
+              v-chip-group.pa-2(column)
+                v-chip(v-for='tag in tags', :key='tag.sys.id')
+                  nuxt-link(:to='`/tags/${tag.sys.id}`') 
+                    h5.text-h5 {{ tag.fields.name }}
+          //- section.mb-8 
+          //-   v-sheet.mb-8.pa-4(elevation='0')
+          //-     v-subheader 
+          //-       h3.text-h3 Locations
+          //-     v-divider
+          //-     v-chip-group.pa-2(column)
+          //-       div(v-for='tag in tags', :key='tag.sys.id')
+          //-         v-chip(v-show='tag.fields.lacation') 
+          //-           h1 {{ tag.fields.name }}
+          //- section.mb-8 
+          //-   v-sheet.mb-8.pa-4(elevation='0')
+          //-     v-subheader 
+          //-       h3.text-h3 Time
+          //-     v-divider
+          //-     v-chip-group.pa-2(column)
+          //-       div(v-for='tag in tags', :key='tag.sys.id')
+          //-         v-chip(v-show='tag.fields.time')
+          //-           h1 {{ tag.fields.name }}
+          //- section.mb-8 
+          //-   v-sheet.mb-8.pa-4(elevation='0')
+          //-     v-subheader 
+          //-       h3.text-h3 Veichle
+          //-     v-divider
+          //-     v-chip-group.pa-2(column)
+          //-       div(v-for='tag in tags', :key='tag.sys.id')
+          //-         v-chip(v-show='tag.fields.move')
+          //-           h1 {{ tag.fields.name }}
+          
+                 
+          section.mb-8 
+            v-sheet.mb-8.pa-4(elevation='0')
+              v-subheader 
+                nuxt-link(to='/posts') 
+                  h3.text-h3 Post Title
+              v-divider
+              v-chip-group.pa-2(column)
+                v-chip(v-for='post in posts', :key='post.sys.id').px-2
+                  nuxt-link(:to='`/posts/${post.sys.id}`')
+                      h5.text-h5.d-inline-block.px-2 {{ post.fields.title }}
+          section.mb-8 
+            v-sheet.mb-8.pa-4(elevation='0')
+              v-subheader
+                nuxt-link(to='/posts') 
+                  h3.text-h3 Post Date
+              v-divider
+              v-chip-group.pa-2(column)
+                v-chip(v-for='post in posts', :key='post.sys.id')
+                  nuxt-link(:to='`/posts/${post.sys.id}`') 
+                    h5.text-h5 {{ dateFilter(post.fields.publishDate) }}
+          //- section.mb-8 
+          //-   v-sheet.mb-8.pa-4(elevation='0')
+          //-     div(v-for='auther in authers', :key='auther.sys.id').d-flex.justify-center.align-center
+          //-       a(:href="auther.fields.instagram" target="_blank")
+          //-         //- span.text-h4 sns
+          //-         v-icon.ml-4 mdi-instagram
+          //-         //- h1 {{auther.fields.instagram}}
+          
                         
                    
 
           //- section.mb-8 
           //-   h1 Post Date
-          //-   v-sheet(height='64', elevation='3')
+          //-   v-sheet(height='64', elevation='0')
           //-     v-toolbar(flat)
           //-       v-btn.mr-4(outlined, color='grey darken-2', @click='setToday') Today
           //-       v-btn(fab, text, small, color='grey darken-2', @click='prev')
@@ -280,64 +294,78 @@ v-container
           //-       @change='updateRange'
           //-     )
 
-      v-row 
-        v-col
-          section.mb-4
-            h1 TOURdeHDR SIMPLE
-            p index.vue
-          //- section.mb-4
-          //-   h1 {{posts}}
-          //-     //-   h1 tags-------------------------------------------------------------
-          //-     //-   p {{ tags }}
-          //-     //-   h1 category---------------------------------------------------------
-          //-     //-   p {{ categories }}
-          v-divider
-          section.mb-4 
-            h1 contentful blog post data
-            //- div(v-for='(post, idxPost) in posts.slice(0, 3)', :key='post.sys.id')
-            div(
-              v-for='(post, idxPost) in filterPostPage().slice(0, 3)',
-              :key='post.sys.id'
-            )
-              h1 1.id: {{ post.sys.id }}
-              h1 2.craete-date: {{ post.sys.createdAt }}
-              h1 3.titlePage: {{ post.fields.titlePage }}
-              h1 4.title: {{ post.fields.title }}
-              h1 5.stage: {{ post.fields.stage }}
-              h1 6.slug: {{ post.fields.slug }}
+      //- v-row 
+      //-   v-col
+      //-     section.mb-4
+      //-       h1 TOURdeHDR SIMPLE
+      //-       p index.vue
+      //-     //- section.mb-4
+      //-     //-   h1 {{posts}}
+      //-     //-     //-   h1 tags-------------------------------------------------------------
+      //-     //-     //-   p {{ tags }}
+      //-     //-     //-   h1 category---------------------------------------------------------
+      //-     //-     //-   p {{ categories }}
+      //-     v-divider
+      //-     section.mb-4 
+      //-       h1 contentful blog post data 
+      //-       //- div(v-for='(post, idxPost) in posts.slice(0, 3)', :key='post.sys.id')
+      //-       div(
+      //-         v-for='(post, idxPost) in filterPostPage().slice(0, 3)',
+      //-         :key='post.sys.id'
+      //-       )
+      //-         h1 1.id: {{ post.sys.id }}
+      //-         h1 2.craete-date: {{ post.sys.createdAt }}
+      //-         h1 3.titlePage: {{ post.fields.titlePage }}
+      //-         h1 4.title: {{ post.fields.title }}
+      //-         h1 5.stage: {{ post.fields.stage }}
+      //-         h1 6.slug: {{ post.fields.slug }}
 
-              //- h1 4. {{ post.fields.category.fields.name }}
-              //- h1 4. {{ post.fields.heroImage.fields.title }}
-              //- h1 4. {{ post.fields.heroImage.fields.file.url }}
-              img(
-                :src='post.fields.heroImage.fields.file.url',
-                :alt='post.fields.heroImage.fields.title',
-                :aspect-ratio='16 / 9',
-                width='100',
-                height='auto'
-              )
-              //-         h1 category: {{ post.fields.category }}
-              //-         h1 tag: {{ post.fields.tags }}
-              //-         h1 location: {{ post.fields.location }}
-              img(
-                :src='post.fields.author.fields.image.fields.file.url',
-                :alt='post.fields.heroImage.fields.title',
-                :aspect-ratio='16 / 9',
-                width='100',
-                height='auto'
-              )
-              h1 7.author: {{ post.fields.author.fields.image.fields.file.url }}
-              h1 7.author: {{ post.fields.author.fields.image.fields.title }}
-              h1 7.author: {{ post.fields.author.fields }}
+      //-         //- h1 4. {{ post.fields.category.fields.name }}
+      //-         //- h1 4. {{ post.fields.heroImage.fields.title }}
+      //-         //- h1 4. {{ post.fields.heroImage.fields.file.url }}
+      //-         img(
+      //-           :src='post.fields.heroImage.fields.file.url',
+      //-           :alt='post.fields.heroImage.fields.title',
+      //-           :aspect-ratio='16 / 9',
+      //-           width='100',
+      //-           height='auto'
+      //-         )
+      //-         //-         h1 category: {{ post.fields.category }}
+      //-         //-         h1 tag: {{ post.fields.tags }}
+      //-         //-         h1 location: {{ post.fields.location }}
+      //-         img(
+      //-           :src='post.fields.author.fields.image.fields.file.url',
+      //-           :alt='post.fields.heroImage.fields.title',
+      //-           :aspect-ratio='16 / 9',
+      //-           width='100',
+      //-           height='auto'
+      //-         )
+      //-         h1 7.author: {{ post.fields.author.fields.image.fields.file.url }}
+      //-         h1 7.author: {{ post.fields.author.fields.image.fields.title }}
+      //-         h1 7.author: {{ post.fields.author.fields }}
 
-              //- div.bg-img-card(:style="{
-              //-   background: `top center / cover no-repeat url(${setEyeCatch(item).url})`
-              //- }")
-          //-     div(v-if="post.fields.image2")
-          //-       div(v-for="(img,idxImg) in post.fields.image2" :kwy="post.sys.id")
+      //-         //- div.bg-img-card(:style="{
+      //-         //-   background: `top center / cover no-repeat url(${setEyeCatch(item).url})`
+      //-         //- }")
+      //-     //-     div(v-if="post.fields.image2")
+      //-     //-       div(v-for="(img,idxImg) in post.fields.image2" :kwy="post.sys.id")
 
-          //- section  
-            //- h1.text-h3.my-8 {{JSON.stringify(post.fields.heroImage)}}
+      //-     //- section  
+      //-       //- h1.text-h3.my-8 {{JSON.stringify(post.fields.heroImage)}}
+
+      //- v-footer(app, width='100vw', color='grey darken-4', )
+      //-   v-toolbar-title.footerTitle.pa-4.d-flex.justify-center.align-center
+      //-     img.mr-4.d-none.d-md-block(
+      //-       src='~/assets/img/logo/h-works1200x600white.svg',
+      //-       alt='h-works logo',
+      //-       height='28'
+      //-     )
+      //-     img.d-block.mr-4(
+      //-       src='~assets/img/logo/h-logo.svg',
+      //-       alt='h-works',
+      //-       height='28'
+      //-     )
+      //-     .mr-4.mt-2.white--text &copy; {{ new Date().getFullYear() }}
 </template>
 <script>
 // import client from '~/plugins/contentful'
@@ -459,6 +487,10 @@ export default {
     // calender-test
     setToday() {
       this.value = moment().format('yyyy-MM-DD')
+    },
+    dateFilter(value) {
+      const date = moment(value)
+      return date.format('YYYY.MM.DD')
     },
     getEvents() {
       const events = [
@@ -625,9 +657,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-// * {
-//   border: 1px solid red;
-// }
+.bd1 {
+  border: 1px solid red;
+}
 .bg-img-card {
   width: 100%;
   height: 25vh;

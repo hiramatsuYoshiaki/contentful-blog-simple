@@ -22,6 +22,7 @@ export default {
   plugins: [
     '~/plugins/contentful.js',
     { src: '~/plugins/vue2-touch-events.js', ssr: false },
+    { src: '~plugins/vue2-google-maps.js' },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

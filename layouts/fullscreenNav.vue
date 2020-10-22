@@ -1,6 +1,6 @@
 <template lang="pug">
 v-app
-  v-navigation-drawer.d-flex.justify-sm-center.align-sm-center.pa-8(
+  v-navigation-drawer.d-flex.justify-center.align-center.pa-8(
     v-model='drawer',
     dark,
     app,
@@ -27,13 +27,11 @@ v-app
         @click.stop='drawer = !drawer',
         color='grey darken-4'
       )
-        //- v-list-item-action.pl-8.pr-2
-        //-   v-icon(large dark) {{ item.icon }}
         v-list-item-content
           v-list-item-title.text-center
             v-btn(dark, elevation=0, color='grey darken-4') 
               h1.text-h4 {{ item.title }}
-      v-btn.mt-8(@click.stop='drawer = !drawer') 
+      v-btn.mt-8(@click.stop='drawer = !drawer')
         v-icon mdi-close-thick
 
   v-app-bar(app, color='grey darken-4') 
@@ -59,26 +57,34 @@ v-app
         //- nuxt-link(:to="item.to")
         span(color='white') {{ item.title }}
     v-app-bar-nav-icon.d-flex.d-sm-none(@click.stop='drawer = !drawer')
+      v-icon.white--text mdi-menu
 
   v-main
     nuxt 
-  v-footer(app, width='100vw', color='grey darken-4')
-    //- v-toolbar-title.d-flex.justify-center.align-center
-    v-toolbar-title.footerTitle.pa-4.d-flex.justify-center.align-center
-      //- span TOURdeHDR+3
+  //- v-footer(app, width='100vw', color='grey darken-4', padless="padless")
+  //-   v-toolbar-title.footerTitle.pa-4.d-flex.justify-center.align-center
+  //-     img.mr-4.d-none.d-md-block(
+  //-       src='~/assets/img/logo/h-works1200x600white.svg',
+  //-       alt='h-works logo',
+  //-       height='28'
+  //-     )
+  //-     img.d-block.mr-4(
+  //-       src='~assets/img/logo/h-logo.svg',
+  //-       alt='h-works',
+  //-       height='28'
+  //-     )
+  //-     .mr-4.mt-2.white--text &copy; {{ new Date().getFullYear() }}
+  v-bottom-navigation.d-block.d-flex.justify-space-between.d-sm-none.px-4(app, v-model="value" ) 
+      v-btn( value="recent")
+        span Recent
+        v-icon mdi-history
+      v-btn( value="favorites")
+        span Favorites
+        v-icon mdi-heart
+      v-btn( value="nearby")
+        span Nearby
+        v-icon mdi-map-marker
 
-      img.mr-4.d-none.d-md-block(
-        src='~/assets/img/logo/h-works1200x600white.svg',
-        alt='h-works logo',
-        height='28'
-      )
-      img.d-block.mr-4(
-        src='~assets/img/logo/h-logo.svg',
-        alt='h-works',
-        height='28'
-      )
-      .mr-4.mt-2 &copy; {{ new Date().getFullYear() }}
-  //- v-bottom-navigation(app) bottom-navigation
 </template>
 <script>
 export default {
@@ -113,11 +119,15 @@ export default {
         //   to: '/tags',
         // },
       ],
+      value: 'recent',
     }
   },
 }
 </script>
 <style lang="scss">
+// * {
+//   border: 1px solid red;
+// }
 html {
   font-size: 62.5%; //62.5% 1rem=10px
 }
