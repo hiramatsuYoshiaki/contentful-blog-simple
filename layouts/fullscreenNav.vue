@@ -61,19 +61,6 @@ v-app
 
   v-main
     nuxt 
-  //- v-footer(app, width='100vw', color='grey darken-4', padless="padless")
-  //-   v-toolbar-title.footerTitle.pa-4.d-flex.justify-center.align-center
-  //-     img.mr-4.d-none.d-md-block(
-  //-       src='~/assets/img/logo/h-works1200x600white.svg',
-  //-       alt='h-works logo',
-  //-       height='28'
-  //-     )
-  //-     img.d-block.mr-4(
-  //-       src='~assets/img/logo/h-logo.svg',
-  //-       alt='h-works',
-  //-       height='28'
-  //-     )
-  //-     .mr-4.mt-2.white--text &copy; {{ new Date().getFullYear() }}
   v-bottom-navigation.d-block.d-flex.justify-space-between.d-sm-none.px-4(app, v-model="value" ) 
       v-btn( value="recent")
         span Recent
@@ -94,6 +81,11 @@ export default {
       toggle_exclusive: undefined,
       items: [
         {
+          icon: 'mdi-home',
+          title: 'HOME',
+          to: '/home',
+        },
+        {
           icon: 'mdi-new-box',
           title: 'NEW',
           to: '/',
@@ -103,11 +95,6 @@ export default {
           title: 'POST',
           to: '/posts',
         },
-        // {
-        //   icon: 'mdi-map-marker',
-        //   title: 'LOCATION',
-        //   to: '/locations',
-        // },
         {
           icon: 'mdi-numeric-1-box-multiple',
           title: 'STAGES',
