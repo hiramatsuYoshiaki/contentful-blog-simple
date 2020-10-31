@@ -56,9 +56,9 @@ v-container.container(fluid)
         v-bind:class='[{ stageImgTextLeft: i % 2 === 0 }, { stageImgTextRight: i % 2 != 0 }]'
       )
         div
-          h3.text-h3.text-center New! Post
+          h3.text-h5.text-md-h3.text-center New! Post
         div
-          h4.text-h4.text-center {{ post.fields.title }} X HDRi
+          h4.text-h6.text-md-h4.text-center {{ post.fields.title }}
       div(
         v-bind:class='[{ stageImgLinerLeft: i % 2 === 0 }, { stageImgLinerRight: i % 2 != 0 }]'
       )
@@ -67,27 +67,38 @@ v-container.container(fluid)
       h1.text-center.text-h3.text-md-h1 Locations/GoogleEarth
       h3.text-center.text-h5.text-md-h3 New Stage Video Review
   v-row 
-    v-col.newPostSec.mx-auto(
+    v-col.newStageSec.mx-auto(
       v-for='(post, i) in filterTitlePage().slice(0, 2)',
       :key='post.sys.id',
       cols='12',
       md='12',
       lg='8'
     ) 
-      img(:src='setEyeCatch(post).url', width='300px', height='auto') 
-
-      GmapMap.map-size(
-        :center='{ lat: post.fields.location.lat, lng: post.fields.location.lon }',
-        :zoom='14',
-        map-type-id='satellite'
-      )
-        GmapMarker(
-          :position='setLocation(post.fields.location.lat, post.fields.location.lon)',
-          :clickable='true',
-          :draggable='false'
+      .video-wrape
+        video.earth-video(
+          autoplay='autoplay',
+          loop,
+          muted,
+          playsinline,
+          controls
         )
-      video(autoplay='autoplay', loop, muted, playsinline, controls)
-        source(:src='post.fields.video.fields.file.url', type='video/mp4')
+          source(:src='post.fields.video.fields.file.url', type='video/mp4')
+      .title-map-wrape
+        .img-wrape
+          img.title-img(:src='setEyeCatch(post).url') 
+          .img-text-box.d-flex.justify-end.align-end 
+            h3.text-h4.text-md-h3 {{ post.fields.title }}
+        .map-wrape
+          GmapMap.map-box(
+            :center='{ lat: post.fields.location.lat, lng: post.fields.location.lon }',
+            :zoom='14',
+            map-type-id='satellite'
+          )
+            GmapMarker(
+              :position='setLocation(post.fields.location.lat, post.fields.location.lon)',
+              :clickable='true',
+              :draggable='false'
+            )
 
   v-row 
     v-col
@@ -213,8 +224,9 @@ $moreLinkBg: rgba(6, 121, 141, 0.2);
 // }
 .container {
   background: linear-gradient(
-    rgba(214, 243, 247, 0.1),
-    rgba(115, 250, 243, 0.3)
+    rgba(214, 243, 247, 0.2),
+    rgba(115, 250, 194, 0.2),
+    rgba(146, 115, 250, 0.2)
   );
 }
 .newPostSec {
@@ -708,16 +720,219 @@ $moreLinkBg: rgba(6, 121, 141, 0.2);
     }
   }
 }
-.map-size {
-  width: 300px;
-  height: 200px;
-  // @media (min-width: 960px) {
-  //   width: calc(50vw - #{$aside-width});
-  //   height: 35vh;
+//stage-------
+.newStageSec {
+  position: absolute;
+  border: 3px solid black;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  // @media (min-width: 961px) {
+  //   height: 2000px;
+  //   display: block;
   // }
 }
-video {
-  width: 300px;
-  height: 200px;
+.img-wrape {
+  border: 1px solid purple;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  padding: 0;
+  @media (min-width: 601px) {
+    padding: 0;
+    height: 300px;
+  }
+  @media (min-width: 961px) {
+    border: 3px solid purple;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    width: 800px;
+    height: 500px;
+    // margin-top: 800px;
+  }
+  // @media (min-width: 1261px) {
+  //   padding: 0;
+  //   height: 500px;
+  // }
+  .title-img {
+    position: absolute;
+    width: 300px;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: -30px;
+    margin-left: -30px;
+    // vertical-align: bottom;
+    // border: 1px solid red;
+
+    @media (min-width: 601px) {
+      position: absolute;
+      width: 300px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin-top: -30px;
+      margin-left: -30px;
+      // margin-left: -240px;
+    }
+    @media (min-width: 961px) {
+      position: absolute;
+      width: 500px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin-top: -50px;
+      margin-left: -100px;
+    }
+    // @media (min-width: 1261px) {
+    //   position: absolute;
+    //   width: 500px;
+    //   top: 50%;
+    //   left: 50%;
+    //   transform: translate(-50%, -50%);
+    //   margin-top: -50px;
+    //   margin-left: -100px;
+    // }
+  }
+  .img-text-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 30px;
+    margin-left: 30px;
+    width: 300px;
+    height: 150px;
+    vertical-align: bottom;
+    background-color: $moreLinkBg;
+    padding: 8px;
+    @media (min-width: 961px) {
+      padding: 20px;
+    }
+    // @media (min-width: 601px) {
+    //   width: 300px;
+    //   height: 150px;
+    // }
+    @media (min-width: 961px) {
+      width: 500px;
+      height: 250px;
+      margin-top: 100px;
+      margin-left: 100px;
+    }
+    // @media (min-width: 1261px) {
+    //   width: 1000px;
+    // }
+  }
+}
+.video-wrape {
+  border: 1px solid purple;
+  position: relative;
+  width: 100%;
+  // height: 300px;
+  // padding: 0;
+  // @media (min-width: 601px) {
+  //   padding: 0;
+  //   height: 300px;
+  // }
+  @media (min-width: 961px) {
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    // width: 100%;
+    // height: 500px;
+  }
+  // @media (min-width: 1261px) {
+  //   padding: 0;
+  //   height: 500px;
+  // }
+  .earth-video {
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    width: 100%;
+    height: auto;
+    //16:9
+  }
+  .video-text-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 30px;
+    margin-left: 30px;
+    width: 300px;
+    height: 150px;
+    vertical-align: bottom;
+    background-color: $moreLinkBg;
+    padding: 8px;
+    @media (min-width: 961px) {
+      padding: 20px;
+    }
+    @media (min-width: 601px) {
+      width: 300px;
+      height: 150px;
+    }
+    @media (min-width: 961px) {
+      width: 500px;
+      height: 250px;
+      margin-top: 100px;
+      margin-left: 100px;
+    }
+    // @media (min-width: 1261px) {
+    //   margin-top: 100px;
+    //   margin-left: 100px;
+    // }
+  }
+}
+.title-map-wrape {
+  position: relative;
+  width: 100%;
+  height: auto;
+  border: 3px solid red;
+  @media (min-width: 961px) {
+    height: 600px;
+  }
+}
+.map-wrape {
+  border: 1px solid purple;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  padding: 0;
+  // @media (min-width: 601px) {
+  //   padding: 0;
+  //   height: 300px;
+  // }
+  @media (min-width: 961px) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    width: 600px;
+    height: 600px;
+    // margin-top: 800px;
+    margin-left: 360px;
+  }
+  // @media (min-width: 1261px) {
+  //   margin-top: 800px;
+  //   margin-left: 360px;
+  // }
+  .map-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 200px;
+  }
 }
 </style>

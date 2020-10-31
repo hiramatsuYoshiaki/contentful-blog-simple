@@ -15,9 +15,9 @@ v-container
         v-for='(post, idxPost) in filterTitlePage(posts)',
         :key='post.sys.id',
         cols='12',
-        sm="12"
-        md='6'
-        lg="4"
+        sm='12',
+        md='6',
+        lg='4'
       ) 
         v-item(v-slot:default='{ active, toggle }')
           v-img.text-right.pa-2(
@@ -39,12 +39,13 @@ v-container
               v-scroll-y-transition
                 .display-3.flex-grow-1.text-center(v-if='active')
                   //- h1.text-h5 {{ post.sys.id }}
-                  nuxt-link(:to='`/stages/${post.fields.category.fields.slug}`')
+                  nuxt-link(
+                    :to='`/stages/${post.fields.category.fields.slug}`'
+                  )
                     h1.text-h3.mb-2 {{ post.fields.stage }}
                     h1.text-h4.mb-2 {{ post.fields.title }}
                       //- h1.text-h4.mb-2 {{ post.fields.category.fields.slug}}
                       v-icon mdi-arrow-right
-
 
                 //-       v-chip(
                 //-   v-for='categorie in categories',
@@ -52,8 +53,6 @@ v-container
                 //- )
                 //-   nuxt-link(:to='`/stages/${categorie.sys.id}`') 
                 //-     h1 {{ categorie.fields.name }}
-                    
-
                   //- h1 subTitel
                   //- h1 action
                   //- v-list 
